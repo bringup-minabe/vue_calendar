@@ -20,7 +20,6 @@ var vm_calendar = {
         cal_data:[],
         w_names: ['日', '月', '火', '水', '木', '金', '土'],
         cal_event: [],
-        cal_days_event: {},
         cal_format_event: [],
         cal_row_events: {},
         cal_header: [],
@@ -80,7 +79,6 @@ var vm_calendar = {
             this.setCalendarHeader();
         },
         formatCalendarEvent: function(){
-            this.cal_days_event = {};
             this.cal_guid_ev = {};
             this.cal_guid_ev_date = {};
             for (var i = 0; i < this.cal_event.length; i++) {
@@ -94,15 +92,10 @@ var vm_calendar = {
 
                 //set event date ar
                 var this_start_date = this.cal_event[i].start_date;
-                if (typeof this.cal_days_event[this_start_date]  == "undefined") {
-                    this.cal_days_event[this_start_date] = {};
-                }
                 if (typeof this.cal_guid_ev_date[this_start_date]  == "undefined") {
                     this.cal_guid_ev_date[this_start_date] = [];
                 }
                 
-                this.cal_days_event[this_start_date][i] = this.cal_event[i];
-
                 this.cal_guid_ev[this.cal_event[i].guid] = this.cal_event[i];
                 this.cal_guid_ev_date[this_start_date].push(this.cal_event[i].guid);
 
@@ -170,46 +163,6 @@ var vm_calendar = {
                             this_holiday = true;
                         }
 
-                        //set event
-                        var this_event = [];
-                        if (typeof this.cal_days_event[this_date] != 'undefined') {
-                            for(ev in this.cal_days_event[this_date]) {
-
-                                //set event order class
-                                this.cal_days_event[this_date][ev].event_class = 'zsh-cal-ev-' + e;
-
-                                //set day between
-                                var btw_class = 'zsh-cal-btw-0';
-                                if (this.cal_days_event[this_date][ev].start_date != this.cal_days_event[this_date][ev].end_date) {
-                                    var sDy = new Date(this.cal_days_event[this_date][ev].start_date);
-                                    var eDy = new Date(this.cal_days_event[this_date][ev].end_date);
-                                    var termDay = Math.ceil((eDy - sDy) / 86400000);
-                                    if (this_dw == 0) {
-                                        if (this.cal_firstDay == 1 && termDay >= 1) {
-                                            btw_class = 'zsh-cal-btw-' + 1;
-                                        } else {
-                                            if (termDay >= 7) {
-                                                btw_class = 'zsh-cal-btw-' + 7;
-                                            } else {
-                                                btw_class = 'zsh-cal-btw-' + (termDay + 1);
-                                            }
-                                        }
-                                    } else {
-                                        if ((termDay + this_dw) >= 7) {
-                                            termDay = 7 - this_dw;
-                                            btw_class = 'zsh-cal-btw-' + (termDay + this.cal_firstDay);
-                                        } else {
-                                            btw_class = 'zsh-cal-btw-' + (termDay + 1);
-                                        }
-                                    }
-                                }
-                                this.cal_days_event[this_date][ev].btw_class = btw_class;
-
-                                this.cal_format_event[i].push(this.cal_days_event[this_date][ev]);
-                                this_event.push(this.cal_days_event[this_date][ev]);
-                            } 
-                        }
-
                         var this_row_event = [];
                         if (typeof this.cal_guid_ev_date[this_date] != 'undefined') {
                             var this_zinex = 0;
@@ -270,8 +223,7 @@ var vm_calendar = {
                         date: this_date,
                         dw: this_dw,
                         dwd: this_dwd,
-                        holiday: this_holiday,
-                        event: this_event
+                        holiday: this_holiday
                     });
                 }
             }
