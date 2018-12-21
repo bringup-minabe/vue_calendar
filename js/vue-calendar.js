@@ -13,34 +13,42 @@ Array.prototype.cal_chunk = function(size) {
 }
 var vm_calendar = {
     data: {
-        calendar_date: null,
-        calendar_date_display: '',
-        calendar_firstDay: 1,
-        calendar_cel: [],
-        calendar_data:[],
+        cal_date: null,
+        cal_date_display: '',
+        cal_firstDay: 1,
+        cal_cel: [],
+        cal_data:[],
         w_names: ['日', '月', '火', '水', '木', '金', '土'],
-        calendar_event: [],
-        calendar_days_event: {},
-        calendar_format_event: [],
-        calendar_header: [],
-        calendar_today: ''
+        cal_event: [],
+        cal_days_event: {},
+        cal_format_event: [],
+        cal_header: [],
+        cal_today: ''
     },
     methods: {
+        guid: function() {
+            var s4 = function() {
+                return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+            }
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+        },
         setCalendar: function() {
 
-            this.calendar_cel = [];
+            this.cal_cel = [];
 
-            if (this.calendar_date == null) {
-                this.calendar_date = new Date;
+            if (this.cal_date == null) {
+                this.cal_date = new Date;
             } else {
-                this.calendar_date = new Date(this.calendar_date);
+                this.cal_date = new Date(this.cal_date);
             }
 
             //set date display
             this.setDateDisplay();
 
-            var pr_date = this.calendar_date;
-            var firstDay = this.calendar_firstDay;
+            var pr_date = this.cal_date;
+            var firstDay = this.cal_firstDay;
 
             var range = function(min, max) {
                 return Array(max - min + 1).join().split(',').map(function(e, i) {
@@ -53,11 +61,11 @@ var vm_calendar = {
             var before = dt.getDay() - firstDay;
             var after  = (7 - (before + max) % 7) % 7;
 
-            var calendar_cel = range(1 - before, max + after)
+            var cal_cel = range(1 - before, max + after)
                    .map(function (e) { return e < 1 || e > max ? '' : e; })
                    .cal_chunk(7);
 
-            this.calendar_cel = calendar_cel;
+            this.cal_cel = cal_cel;
 
             //format calendar event
             this.formatCalendarEvent();
@@ -69,39 +77,55 @@ var vm_calendar = {
             this.setCalendarHeader();
         },
         formatCalendarEvent: function(){
-            this.calendar_days_event = {};
-            for (var i = 0; i < this.calendar_event.length; i++) {
+            this.cal_days_event = {};
+            for (var i = 0; i < this.cal_event.length; i++) {
 
-                if (typeof this.calendar_event[i].start_date == "undefined") {
+                if (typeof this.cal_event[i].start_date == "undefined") {
                     continue;
                 }
 
-                var this_start_date = this.calendar_event[i].start_date;
-                if (typeof this.calendar_days_event[this_start_date]  == "undefined") {
-                    this.calendar_days_event[this_start_date] = {};
+                //set guid
+                this.cal_event[i].guid = this.guid();
+
+                //set event date ar
+                var this_start_date = this.cal_event[i].start_date;
+                if (typeof this.cal_days_event[this_start_date]  == "undefined") {
+                    this.cal_days_event[this_start_date] = {};
+                }
+
+                if (
+                    typeof this.cal_event[i].start_date != "undefined" && 
+                    typeof this.cal_event[i].end_date != "undefined"
+                ) {
+                    var tob_start_date = new Date(this.cal_event[i].start_date);
+                    var tob_end_date = new Date(this.cal_event[i].end_date);
+                    if (tob_end_date > tob_start_date) {
+                        console.log(tob_end_date);
+                    }
                 }
                 
-                this.calendar_days_event[this_start_date][i] = this.calendar_event[i];
+                this.cal_days_event[this_start_date][i] = this.cal_event[i];
             }
         },
         setCalendarData: function() {
-            this.calendar_data = [];
-            for (var i = 0; i < this.calendar_cel.length; i++) {
-                this.calendar_data[i] = [];
-                this.calendar_format_event[i] = [];
-                for (var e = 0; e < this.calendar_cel[i].length; e++) {
+            this.cal_data = [];
+            for (var i = 0; i < this.cal_cel.length; i++) {
+                this.cal_data[i] = [];
+                this.cal_format_event[i] = [];
+                for (var e = 0; e < this.cal_cel[i].length; e++) {
 
                     var this_date = null;
                     var this_dw = null;
                     var this_dwd = null;
                     var this_holiday = false;
 
-                    if (this.calendar_cel[i][e] != '') {
+                    if (this.cal_cel[i][e] != '') {
+
                         var td_ob = new Date(
-                            this.calendar_date.getFullYear(),
-                            this.calendar_date.getMonth(),
-                            this.calendar_cel[i][e]
-                            );
+                            this.cal_date.getFullYear(),
+                            this.cal_date.getMonth(),
+                            this.cal_cel[i][e]
+                        );
 
                         var this_date_m = ('0' + (td_ob.getMonth() + 1)).slice(-2);
                         var this_date_d = ('0' + td_ob.getDate()).slice(-2);
@@ -121,19 +145,20 @@ var vm_calendar = {
 
                         //set event
                         var this_event = [];
-                        if (typeof this.calendar_days_event[this_date] != 'undefined') {
-                            for(ev in this.calendar_days_event[this_date]) {
+                        if (typeof this.cal_days_event[this_date] != 'undefined') {
+                            for(ev in this.cal_days_event[this_date]) {
+
                                 //set event order class
-                                this.calendar_days_event[this_date][ev].event_class = 'zsh-cal-ev-' + e;
+                                this.cal_days_event[this_date][ev].event_class = 'zsh-cal-ev-' + e;
 
                                 //set day between
                                 var btw_class = 'zsh-cal-btw-0';
-                                if (this.calendar_days_event[this_date][ev].start_date != this.calendar_days_event[this_date][ev].end_date) {
-                                    var sDy = new Date(this.calendar_days_event[this_date][ev].start_date);
-                                    var eDy = new Date(this.calendar_days_event[this_date][ev].end_date);
+                                if (this.cal_days_event[this_date][ev].start_date != this.cal_days_event[this_date][ev].end_date) {
+                                    var sDy = new Date(this.cal_days_event[this_date][ev].start_date);
+                                    var eDy = new Date(this.cal_days_event[this_date][ev].end_date);
                                     var termDay = Math.ceil((eDy - sDy) / 86400000);
                                     if (this_dw == 0) {
-                                        if (this.calendar_firstDay == 1 && termDay >= 1) {
+                                        if (this.cal_firstDay == 1 && termDay >= 1) {
                                             btw_class = 'zsh-cal-btw-' + 1;
                                         } else {
                                             if (termDay >= 7) {
@@ -145,22 +170,22 @@ var vm_calendar = {
                                     } else {
                                         if ((termDay + this_dw) >= 7) {
                                             termDay = 7 - this_dw;
-                                            btw_class = 'zsh-cal-btw-' + (termDay + this.calendar_firstDay);
+                                            btw_class = 'zsh-cal-btw-' + (termDay + this.cal_firstDay);
                                         } else {
                                             btw_class = 'zsh-cal-btw-' + (termDay + 1);
                                         }
                                     }
                                 }
-                                this.calendar_days_event[this_date][ev].btw_class = btw_class;
+                                this.cal_days_event[this_date][ev].btw_class = btw_class;
 
-                                this.calendar_format_event[i].push(this.calendar_days_event[this_date][ev]);
-                                this_event.push(this.calendar_days_event[this_date][ev]);
+                                this.cal_format_event[i].push(this.cal_days_event[this_date][ev]);
+                                this_event.push(this.cal_days_event[this_date][ev]);
                             } 
                         }
                     }
 
-                    this.calendar_data[i].push({
-                        day: this.calendar_cel[i][e],
+                    this.cal_data[i].push({
+                        day: this.cal_cel[i][e],
                         date: this_date,
                         dw: this_dw,
                         dwd: this_dwd,
@@ -172,10 +197,10 @@ var vm_calendar = {
         },
         setCalendarHeader: function() {
             
-            this.calendar_header = [];
+            this.cal_header = [];
             
             var h_ar = ['日', '月', '火', '水', '木', '金', '土'];
-            if (this.calendar_firstDay == 1) {
+            if (this.cal_firstDay == 1) {
                 h_ar = ['月', '火', '水', '木', '金', '土', '日'];
             }
             
@@ -184,31 +209,31 @@ var vm_calendar = {
                 if (h_ar[i] == '土' || h_ar[i] == '日') {
                     holiday = true;
                 }
-                this.calendar_header.push({
+                this.cal_header.push({
                     display: h_ar[i],
                     holiday: holiday
                 });
             }
         },
         setDateDisplay: function() {
-            var date_m = ('0' + (this.calendar_date.getMonth() + 1)).slice(-2);
-            this.calendar_date_display = this.calendar_date.getFullYear() + '年' + date_m + '月';
+            var date_m = ('0' + (this.cal_date.getMonth() + 1)).slice(-2);
+            this.cal_date_display = this.cal_date.getFullYear() + '年' + date_m + '月';
         },
         calPrev: function() {
-            this.calendar_date.setMonth(this.calendar_date.getMonth() - 1);
+            this.cal_date.setMonth(this.cal_date.getMonth() - 1);
             this.setCalendar();
         },
         calNext: function() {
-            this.calendar_date.setMonth(this.calendar_date.getMonth() + 1);
+            this.cal_date.setMonth(this.cal_date.getMonth() + 1);
             this.setCalendar();
         },
         calToday: function() {
-            this.calendar_date = new Date
+            this.cal_date = new Date
             this.setCalendar();
         }
     },
     created: function() {
         var now = new Date;
-        this.calendar_today = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate();
+        this.cal_today = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate();
     }
 }

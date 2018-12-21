@@ -12,7 +12,7 @@
 <body>
     <h1 style="text-align: center;">Calendar</h1>
     <div id="calendar" class="zsh-cal" v-cloak>
-        <div class="zsh-cal-date">{{calendar_date_display}}</div>
+        <div class="zsh-cal-date">{{cal_date_display}}</div>
         <div class="zsh-cal-nav">
             <span class="zsh-cal-prev btn btn-default" v-on:click="calToday()">今日</span>
             <span class="zsh-cal-prev btn btn-default" v-on:click="calPrev()">&lt;</span>
@@ -20,26 +20,26 @@
         </div>
         <div class="zsh-cal-content">
             <div class="zsh-cal-conHead">
-                <div v-for="calHead in calendar_header" v-bind:class="[calHead.holiday == true ? 'zsh-cal-holiday' : '']">{{calHead.display}}</div>
+                <div v-for="calHead in cal_header" v-bind:class="[calHead.holiday == true ? 'zsh-cal-holiday' : '']">{{calHead.display}}</div>
             </div>
             <div class="zsh-cal-conBody">
-                <div v-for="(calData, calIndex) in calendar_data" class="zsh-cal-conRw">
+                <div v-for="(calData, calIndex) in cal_data" class="zsh-cal-conRw">
                     <div class="zsh-cal-conCeWr">
                         <div
                         v-for="calD in calData"
                         :class="[
                         'zsh-cal-conCe',
                         calD.holiday == true ? 'zsh-cal-holiday' : '',
-                        calD.date == calendar_today ? 'zsh-cal-today' : ''
+                        calD.date == cal_today ? 'zsh-cal-today' : ''
                         ]"
                         :data-date="calD.date"
                         >
                             <div class="calD-day"><span>{{calD.day}}</span></div>
                         </div>
                     </div>
-                    <div class="zsh-cal-evWr" v-if="calendar_format_event[calIndex].length > 0">
+                    <div class="zsh-cal-evWr" v-if="cal_format_event[calIndex].length > 0">
                         <div
-                        v-for="(calEv, calEvIndex) in calendar_format_event[calIndex]"
+                        v-for="(calEv, calEvIndex) in cal_format_event[calIndex]"
                         :class="[
                         'zsh-cal-ev',
                         calEv.event_class,

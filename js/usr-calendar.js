@@ -2,7 +2,7 @@ var usr_calendar = new Vue({
     el: '#calendar',
     mixins: [vm_calendar],
     created: function() {
-        this.calendar_event = [
+        this.cal_event = [
             {
                 subject: 'テスト1',
                 start_date: '2018-12-03',
