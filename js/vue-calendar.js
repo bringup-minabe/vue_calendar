@@ -5,6 +5,12 @@
  *  0:日曜日
  *  1:月曜日
  */
+Array.prototype.cal_chunk = function(size) {
+    var array = this;
+    return [].concat.apply([], array.map(function(e, i) {
+        return i % size ? [] : [array.slice(i, i + size)];
+    }));
+}
 var vm_calendar = {
     data: {
         calendar_date: null,
@@ -36,13 +42,6 @@ var vm_calendar = {
             var pr_date = this.calendar_date;
             var firstDay = this.calendar_firstDay;
 
-            Array.prototype.cal_chunk = function(size) {
-                var array = this;
-                return [].concat.apply([], array.map(function(e, i) {
-                    return i % size ? [] : [array.slice(i, i + size)];
-                }));
-            }
-
             var range = function(min, max) {
                 return Array(max - min + 1).join().split(',').map(function(e, i) {
                     return min + i;
@@ -72,21 +71,14 @@ var vm_calendar = {
         formatCalendarEvent: function(){
             this.calendar_days_event = {};
             for (var i = 0; i < this.calendar_event.length; i++) {
+
                 if (typeof this.calendar_event[i].start_date == "undefined") {
                     continue;
                 }
+
                 var this_start_date = this.calendar_event[i].start_date;
                 if (typeof this.calendar_days_event[this_start_date]  == "undefined") {
                     this.calendar_days_event[this_start_date] = {};
-                }
-
-                //set day between
-                this.calendar_event[i].btw_class = 'zsh-cal-btw-1';
-                if (this.calendar_event[i].start_date != this.calendar_event[i].end_date) {
-                    var sDy = new Date(this.calendar_event[i].start_date);
-                    var eDy = new Date(this.calendar_event[i].end_date);
-                    var termDay = Math.ceil((eDy - sDy) / 86400000);
-                    this.calendar_event[i].btw_class = 'zsh-cal-btw-' + (termDay + 1);
                 }
                 
                 this.calendar_days_event[this_start_date][i] = this.calendar_event[i];
