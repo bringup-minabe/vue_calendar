@@ -22,8 +22,11 @@ var vm_calendar = {
         cal_event: [],
         cal_days_event: {},
         cal_format_event: [],
+        cal_row_events: {},
         cal_header: [],
-        cal_today: ''
+        cal_today: '',
+        cal_guid_ev: {},
+        cal_guid_ev_date: {}
     },
     methods: {
         guid: function() {
@@ -78,6 +81,8 @@ var vm_calendar = {
         },
         formatCalendarEvent: function(){
             this.cal_days_event = {};
+            this.cal_guid_ev = {};
+            this.cal_guid_ev_date = {};
             for (var i = 0; i < this.cal_event.length; i++) {
 
                 if (typeof this.cal_event[i].start_date == "undefined") {
@@ -92,19 +97,40 @@ var vm_calendar = {
                 if (typeof this.cal_days_event[this_start_date]  == "undefined") {
                     this.cal_days_event[this_start_date] = {};
                 }
+                if (typeof this.cal_guid_ev_date[this_start_date]  == "undefined") {
+                    this.cal_guid_ev_date[this_start_date] = [];
+                }
+                
+                this.cal_days_event[this_start_date][i] = this.cal_event[i];
 
+                this.cal_guid_ev[this.cal_event[i].guid] = this.cal_event[i];
+                this.cal_guid_ev_date[this_start_date].push(this.cal_event[i].guid);
+
+                //set between date
                 if (
                     typeof this.cal_event[i].start_date != "undefined" && 
                     typeof this.cal_event[i].end_date != "undefined"
                 ) {
                     var tob_start_date = new Date(this.cal_event[i].start_date);
                     var tob_end_date = new Date(this.cal_event[i].end_date);
-                    if (tob_end_date > tob_start_date) {
-                        console.log(tob_end_date);
+                    if (tob_end_date.getTime() > tob_start_date.getTime()) {
+                        tob_start_date.setDate(tob_start_date.getDate() + 1);
+                        var btw_fl = true;
+                        while (btw_fl) {
+                            var btw_date = tob_start_date.getFullYear() + '-' + (tob_start_date.getMonth() + 1) + '-' + tob_start_date.getDate();
+                            if (typeof this.cal_guid_ev_date[btw_date]  == "undefined") {
+                                this.cal_guid_ev_date[btw_date] = [];
+                            }
+                            if (this.cal_guid_ev_date[btw_date].indexOf(this.cal_event[i].guid) == -1) {
+                                this.cal_guid_ev_date[btw_date].push(this.cal_event[i].guid);
+                            }
+                            tob_start_date.setDate(tob_start_date.getDate() + 1);
+                            if (tob_end_date.getTime() < tob_start_date.getTime()) {
+                                btw_fl = false;
+                            }
+                        }
                     }
                 }
-                
-                this.cal_days_event[this_start_date][i] = this.cal_event[i];
             }
         },
         setCalendarData: function() {
@@ -112,6 +138,7 @@ var vm_calendar = {
             for (var i = 0; i < this.cal_cel.length; i++) {
                 this.cal_data[i] = [];
                 this.cal_format_event[i] = [];
+                this.cal_row_events[i] = {};
                 for (var e = 0; e < this.cal_cel[i].length; e++) {
 
                     var this_date = null;
@@ -181,6 +208,60 @@ var vm_calendar = {
                                 this.cal_format_event[i].push(this.cal_days_event[this_date][ev]);
                                 this_event.push(this.cal_days_event[this_date][ev]);
                             } 
+                        }
+
+                        var this_row_event = [];
+                        if (typeof this.cal_guid_ev_date[this_date] != 'undefined') {
+                            var this_zinex = 0;
+                            var tmp_ev = this.cal_guid_ev_date[this_date];
+                            var cal_guid_ev = this.cal_guid_ev;
+                            var cal_row_events = this.cal_row_events;
+                            var cal_firstDay = this.cal_firstDay;
+                            tmp_ev.forEach(function(tre_guid, index) {
+                                
+                                // var tre_guid_obj = cal_guid_ev[tre_guid];
+                                var tre_guid_obj = Vue.util.extend({}, cal_guid_ev[tre_guid]);
+
+                                //format start date
+                                if (tre_guid_obj.start_date < this_date) {
+                                    tre_guid_obj.start_date = this_date;
+                                }
+
+                                //set day between
+                                var btw_class = 'zsh-cal-btw-0';
+                                if (tre_guid_obj.start_date != tre_guid_obj.end_date) {
+                                    var sDy = new Date(tre_guid_obj.start_date);
+                                    var eDy = new Date(tre_guid_obj.end_date);
+                                    var termDay = Math.ceil((eDy - sDy) / 86400000);
+                                    if (this_dw == 0) {
+                                        if (cal_firstDay == 1 && termDay >= 1) {
+                                            btw_class = 'zsh-cal-btw-' + 1;
+                                        } else {
+                                            if (termDay >= 7) {
+                                                btw_class = 'zsh-cal-btw-' + 7;
+                                            } else {
+                                                btw_class = 'zsh-cal-btw-' + (termDay + 1);
+                                            }
+                                        }
+                                    } else {
+                                        if ((termDay + this_dw) >= 7) {
+                                            termDay = 7 - this_dw;
+                                            btw_class = 'zsh-cal-btw-' + (termDay + cal_firstDay);
+                                        } else {
+                                            btw_class = 'zsh-cal-btw-' + (termDay + 1);
+                                        }
+                                    }
+                                }
+                                tre_guid_obj.btw_class = btw_class;
+
+                                tre_guid_obj.event_class = 'zsh-cal-ev-' + e;
+                                if (cal_row_events[i][tre_guid] == undefined) {
+                                    tre_guid_obj.zindex = this_zinex;
+                                    this_zinex = this_zinex + 1;
+                                    cal_row_events[i][tre_guid] = tre_guid_obj;
+                                }
+                            })
+                            this.cal_row_events = cal_row_events;
                         }
                     }
 

@@ -37,15 +37,15 @@
                             <div class="calD-day"><span>{{calD.day}}</span></div>
                         </div>
                     </div>
-                    <div class="zsh-cal-evWr" v-if="cal_format_event[calIndex].length > 0">
+                    <div class="zsh-cal-evWr">
                         <div
-                        v-for="(calEv, calEvIndex) in cal_format_event[calIndex]"
+                        v-for="(calEv, calEvIndex) in cal_row_events[calIndex]"
                         :class="[
                         'zsh-cal-ev',
                         calEv.event_class,
                         calEv.btw_class
                         ]"
-                        :style="{top: calEvIndex + 'em'}"
+                        :style="{top: calEv.zindex + 'em'}"
                         >
                             <div class="zsh-cal-evCon">
                                 {{calEv.subject}}
