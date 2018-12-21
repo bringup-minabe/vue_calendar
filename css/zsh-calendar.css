@@ -1,0 +1,183 @@
+.zsh-cal {
+  padding: 10px;
+  font-size: 12px;
+}
+.zsh-cal .zsh-cal-date {
+  text-align: center;
+  padding: 10px;
+}
+.zsh-cal .zsh-cal-nav {
+  padding: 10px 0;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conHead {
+  display: flex;
+  border-top: #CCC 1px solid;
+  border-right: #CCC 1px solid;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conHead div {
+  padding: 5px 0;
+  width: 14.3%;
+  text-align: center;
+  border-left: #CCC 1px solid;
+  border-bottom: #CCC 1px solid;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw {
+  width: 100%;
+  height: 120px;
+  border-right: #CCC 1px solid;
+  position: relative;
+  overflow: hidden;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-conCeWr {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-conCe {
+  width: 14.3%;
+  height: 120px;
+  border-left: #CCC 1px solid;
+  border-bottom: #CCC 1px solid;
+  position: relative;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr {
+  width: 100%;
+  position: absolute;
+  top: 35px;
+  left: 0;
+  z-index: 0;
+  flex: 1 1 0%;
+  height: 2em;
+  font-size: 24px;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev {
+  position: absolute;
+  padding-right: 8px;
+  width: 14.3%;
+  height: 24px;
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 2;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-evCon {
+  height: 22px;
+  padding: 0 8px;
+  line-height: 20px;
+  font-size: 12px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  pointer-events: auto;
+  overflow: hidden;
+  outline: none;
+  background-color: #c6dafc;
+  cursor: pointer;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-1 {
+  left: 14.3%;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-2 {
+  left: 28.6%;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-3 {
+  left: 42.9%;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-4 {
+  left: 57.2%;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-5 {
+  left: 71.5%;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-6 {
+  left: 85.8%;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-7 {
+  left: 100.1%;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-btw-0 {
+  width: 14.3%;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-btw-1 {
+  width: 14.3%;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-btw-2 {
+  width: 28.6%;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-btw-3 {
+  width: 42.9%;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-btw-4 {
+  width: 57.2%;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-btw-5 {
+  width: 71.5%;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-btw-6 {
+  width: 85.8%;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-btw-7 {
+  width: 100.1%;
+}
+.zsh-cal .zsh-cal-content table {
+  width: 100%;
+  border-top: #CCC 1px solid;
+  border-right: #CCC 1px solid;
+}
+.zsh-cal .zsh-cal-content table th, .zsh-cal .zsh-cal-content table td {
+  border-left: #CCC 1px solid;
+  border-bottom: #CCC 1px solid;
+}
+.zsh-cal .zsh-cal-content table thead th, .zsh-cal .zsh-cal-content table thead td {
+  padding: 5px 10px;
+  text-align: center;
+}
+.zsh-cal .zsh-cal-content table tbody td {
+  padding: 10px;
+  height: 120px;
+  position: relative;
+}
+.zsh-cal .zsh-cal-content table tbody td .calD-day {
+  font-size: 0.9em;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+.zsh-cal .zsh-cal-content table tbody td .calD-day span {
+  display: inline-block;
+  text-align: center;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  margin: auto;
+}
+.zsh-cal .zsh-cal-content table tbody .zsh-cal-today .calD-day span {
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  background-color: #337ab7;
+  color: #FFF;
+}
+.zsh-cal .calD-day {
+  font-size: 0.9em;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+.zsh-cal .calD-day span {
+  display: inline-block;
+  text-align: center;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  margin: auto;
+}
+.zsh-cal .zsh-cal-today .calD-day span {
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  background-color: #337ab7;
+  color: #FFF;
+}
+.zsh-cal .zsh-cal-holiday {
+  background-color: #EEE;
+}
