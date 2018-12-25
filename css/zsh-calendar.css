@@ -23,7 +23,7 @@
 }
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw {
   width: 100%;
-  height: 120px;
+  height: 140px;
   border-right: #CCC 1px solid;
   position: relative;
   overflow: hidden;
@@ -37,7 +37,7 @@
 }
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-conCe {
   width: 14.3%;
-  height: 120px;
+  height: 140px;
   border-left: #CCC 1px solid;
   border-bottom: #CCC 1px solid;
   position: relative;
@@ -66,6 +66,7 @@
   padding: 0 8px;
   line-height: 20px;
   font-size: 12px;
+  line-height: 2;
   -webkit-border-radius: 4px;
   border-radius: 4px;
   box-sizing: border-box;
@@ -135,7 +136,7 @@
 }
 .zsh-cal .zsh-cal-content table tbody td {
   padding: 10px;
-  height: 120px;
+  height: 140px;
   position: relative;
 }
 .zsh-cal .zsh-cal-content table tbody td .calD-day {
