@@ -82,6 +82,9 @@ $cellHeight: 140px;
                         outline: none;
                         background-color: #c6dafc;
                         cursor: pointer;
+                        a {
+                            display: block;
+                        }
                     }
                     .zsh-cal-ev-more {
                         top: 7em;

@@ -76,6 +76,9 @@
   background-color: #c6dafc;
   cursor: pointer;
 }
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-evCon a {
+  display: block;
+}
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-more {
   top: 7em;
   position: absolute;
