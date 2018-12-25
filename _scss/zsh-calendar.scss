@@ -33,7 +33,6 @@ $cellHeight: 140px;
                 height: $cellHeight;
                 border-right: #CCC 1px solid;
                 position: relative;
-                overflow: hidden;
                 .zsh-cal-conCeWr {
                     position: absolute;
                     width: 100%;
@@ -58,6 +57,7 @@ $cellHeight: 140px;
                     height: 4em;
                     font-size: 24px;
                     .zsh-cal-evD {
+                        position: relative;
                     }
                     .zsh-cal-ev {
                         position: absolute;
@@ -68,32 +68,23 @@ $cellHeight: 140px;
                         pointer-events: none;
                         z-index: 2;
                     }
-                    .zsh-cal-evCon {
-                        height: 22px;
-                        padding: 0 8px;
-                        line-height: 20px;
-                        font-size: 12px;
-                        line-height: 2;
-                        -webkit-border-radius: 4px;
-                                border-radius: 4px;
-                        box-sizing: border-box;
-                        pointer-events: auto;
-                        overflow: hidden;
-                        outline: none;
-                        background-color: #c6dafc;
-                        cursor: pointer;
-                        a {
-                            display: block;
-                        }
-                    }
                     .zsh-cal-ev-more {
-                        top: 7em;
+                        top: 6.5em;
                         position: absolute;
                         font-size: 12px;
                         z-index: 3;
                         width: $cellWidth;
                         text-align: center;
                         cursor: pointer;
+                        .zsh-cal-more-tg {
+                            display: inline-block;
+                            line-height: 2;
+                            -webkit-border-radius: 3px;
+                                    border-radius: 3px;
+                            &:hover {
+                                background-color: #EEE;
+                            }
+                        }
                     }
                     @for $i from 1 through 7 {
                         .zsh-cal-ev-#{$i} {
@@ -191,5 +182,44 @@ $cellHeight: 140px;
     }
     .zsh-cal-holiday {
         background-color: #EEE;
+    }
+    .zsh-cal-evCon {
+        height: 22px;
+        padding: 0 8px;
+        line-height: 20px;
+        font-size: 12px;
+        line-height: 2;
+        -webkit-border-radius: 4px;
+                border-radius: 4px;
+        box-sizing: border-box;
+        pointer-events: auto;
+        overflow: hidden;
+        outline: none;
+        background-color: #c6dafc;
+        cursor: pointer;
+        a {
+            display: block;
+        }
+    }
+    .zsh-cal-more-con {
+        .zsh-cal-evCon {
+            margin-bottom: 5px;
+        }
+    }
+}
+
+@media screen and (min-width:768px) {
+    .zsh-cal {
+        .zsh-cal-content {
+            .zsh-cal-conBody {
+                .zsh-cal-conRw {
+                    .zsh-cal-ev-more {
+                        .zsh-cal-more-tg {
+                            padding: 0 15px;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

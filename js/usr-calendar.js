@@ -37,7 +37,7 @@ var usr_calendar = new Vue({
                 subject: 'テスト5-2',
                 start_date: '2018-12-03',
                 end_date: '2018-12-03',
-                link: 'http://localhost:8080/#6-2'
+                link: 'http://localhost:8080/#5-2'
             },
             {
                 subject: 'テスト6-1',

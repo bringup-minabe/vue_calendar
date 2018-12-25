@@ -24,7 +24,9 @@ var vm_calendar = {
         cal_header: [],
         cal_today: '',
         cal_guid_ev: {},
-        cal_guid_ev_date: {}
+        cal_guid_ev_date: {},
+        cal_more_title: '',
+        cal_more: []
     },
     methods: {
         guid: function() {
@@ -294,6 +296,18 @@ var vm_calendar = {
         calToday: function() {
             this.cal_date = new Date
             this.setCalendar();
+        },
+        calMore: function(event) {
+            console.log(event);
+            var md_date = new Date(event.srcElement.dataset.date);
+            this.cal_more_title = md_date.getFullYear() + '年' + (md_date.getMonth() + 1) + '月' + md_date.getDate() + '日';
+
+            var row = event.srcElement.dataset.row;
+            var day = event.srcElement.dataset.day;
+
+            this.cal_more = this.cal_row_events[row][day];
+
+            $('#zsh-cal-more').modal();
         }
     },
     created: function() {

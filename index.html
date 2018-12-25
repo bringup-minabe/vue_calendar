@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/vue"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="css/zsh-calendar.css">
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
 </head>
 <body>
     <h1 style="text-align: center;">Calendar</h1>
@@ -77,7 +78,15 @@
                                 'zsh-cal-ev-more-' + calEvIndex,
                                 ]"
                                 >
-                                    他 {{calEv.length - 3}} 件
+                                    <div
+                                    class="zsh-cal-more-tg"
+                                    @click="calMore"
+                                    :data-date="calData[calEvIndex].date"
+                                    :data-row="calIndex"
+                                    :data-day="calEvIndex"
+                                    >
+                                        他 {{calEv.length - 3}} 件
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -85,8 +94,36 @@
                 </div>
             </div>
         </div>
-    </div>
+        <div class="zsh-cal-more-con">
+            <div class="modal" id="zsh-cal-more" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                            <h4 class="modal-title">{{cal_more_title}}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div
+                            v-for="calMdEvd in cal_more"
+                            :class="[
+                            'zsh-cal-ev'
+                            ]"
+                            >
+                                <div class="zsh-cal-evCon">
+                                    <a :href="calMdEvd.link" target="_blank">{{calMdEvd.subject}}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /zsh-cal -->
     <script src="js/vue-calendar.js"></script>
     <script src="js/usr-calendar.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
 </html>
