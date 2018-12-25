@@ -55,8 +55,10 @@ $cellHeight: 140px;
                     left: 0;
                     z-index: 0;
                     flex: 1 1 0%;
-                    height: 2em;
+                    height: 4em;
                     font-size: 24px;
+                    .zsh-cal-evD {
+                    }
                     .zsh-cal-ev {
                         position: absolute;
                         padding-right: 8px;
@@ -81,10 +83,26 @@ $cellHeight: 140px;
                         background-color: #c6dafc;
                         cursor: pointer;
                     }
+                    .zsh-cal-ev-more {
+                        top: 7em;
+                        position: absolute;
+                        font-size: 12px;
+                        z-index: 3;
+                        width: $cellWidth;
+                        text-align: center;
+                        cursor: pointer;
+                    }
                     @for $i from 1 through 7 {
                         .zsh-cal-ev-#{$i} {
                             left: $cellWidth * $i;
+                            z-index: 7 - $i;
                         }
+                        .zsh-cal-ev-more-#{$i} {
+                            left: $cellWidth * $i;
+                        }
+                    }
+                    .zsh-cal-ev-0 {
+                        z-index: 7;
                     }
                     .zsh-cal-btw-0 {
                         width: $cellWidth;

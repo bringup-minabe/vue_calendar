@@ -49,7 +49,7 @@
   left: 0;
   z-index: 0;
   flex: 1 1 0%;
-  height: 2em;
+  height: 4em;
   font-size: 24px;
 }
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev {
@@ -76,26 +76,66 @@
   background-color: #c6dafc;
   cursor: pointer;
 }
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-more {
+  top: 7em;
+  position: absolute;
+  font-size: 12px;
+  z-index: 3;
+  width: 14.3%;
+  text-align: center;
+  cursor: pointer;
+}
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-1 {
+  left: 14.3%;
+  z-index: 6;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-more-1 {
   left: 14.3%;
 }
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-2 {
   left: 28.6%;
+  z-index: 5;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-more-2 {
+  left: 28.6%;
 }
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-3 {
+  left: 42.9%;
+  z-index: 4;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-more-3 {
   left: 42.9%;
 }
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-4 {
   left: 57.2%;
+  z-index: 3;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-more-4 {
+  left: 57.2%;
 }
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-5 {
+  left: 71.5%;
+  z-index: 2;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-more-5 {
   left: 71.5%;
 }
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-6 {
   left: 85.8%;
+  z-index: 1;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-more-6 {
+  left: 85.8%;
 }
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-7 {
   left: 100.1%;
+  z-index: 0;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-more-7 {
+  left: 100.1%;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-ev-0 {
+  z-index: 7;
 }
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-btw-0 {
   width: 14.3%;

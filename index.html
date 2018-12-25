@@ -40,15 +40,45 @@
                     <div class="zsh-cal-evWr">
                         <div
                         v-for="(calEv, calEvIndex) in cal_row_events[calIndex]"
-                        :class="[
-                        'zsh-cal-ev',
-                        calEv.event_class,
-                        calEv.btw_class
-                        ]"
-                        :style="{top: calEv.zindex + 'em'}"
+                        class="zsh-cal-evD"
                         >
-                            <div class="zsh-cal-evCon">
-                                {{calEv.subject}}
+                            <div v-if="calEv.length <= 4">
+                                <div
+                                v-for="(calEvd, calEvdIndex) in calEv"
+                                :class="[
+                                'zsh-cal-ev',
+                                calEvd.event_class,
+                                calEvd.btw_class
+                                ]"
+                                :style="{top: calEvd.s_zindex + 'em'}"
+                                >
+                                    <div class="zsh-cal-evCon">
+                                        {{calEvd.subject}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else>
+                                <div
+                                v-for="(calEvd, calEvdIndex) in calEv.slice(0,3)"
+                                :class="[
+                                'zsh-cal-ev',
+                                calEvd.event_class,
+                                calEvd.btw_class
+                                ]"
+                                :style="{top: calEvd.s_zindex + 'em'}"
+                                >
+                                    <div class="zsh-cal-evCon">
+                                        {{calEvd.subject}}
+                                    </div>
+                                </div>
+                                <div
+                                :class="[
+                                'zsh-cal-ev-more',
+                                'zsh-cal-ev-more-' + calEvIndex,
+                                ]"
+                                >
+                                    他 {{calEv.length - 3}} 件
+                                </div>
                             </div>
                         </div>
                     </div>

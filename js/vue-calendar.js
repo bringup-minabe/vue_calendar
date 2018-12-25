@@ -17,10 +17,9 @@ var vm_calendar = {
         cal_date_display: '',
         cal_firstDay: 1,
         cal_cel: [],
-        cal_data:[],
+        cal_data: [],
         w_names: ['日', '月', '火', '水', '木', '金', '土'],
         cal_event: [],
-        cal_format_event: [],
         cal_row_events: {},
         cal_header: [],
         cal_today: '',
@@ -90,6 +89,9 @@ var vm_calendar = {
                 //set guid
                 this.cal_event[i].guid = this.guid();
 
+                //set between flag
+                this.cal_event[i].between = 0;
+
                 //set event date ar
                 var this_start_date = this.cal_event[i].start_date;
                 if (typeof this.cal_guid_ev_date[this_start_date]  == "undefined") {
@@ -107,6 +109,7 @@ var vm_calendar = {
                     var tob_start_date = new Date(this.cal_event[i].start_date);
                     var tob_end_date = new Date(this.cal_event[i].end_date);
                     if (tob_end_date.getTime() > tob_start_date.getTime()) {
+                        this.cal_event[i].between = 1;
                         tob_start_date.setDate(tob_start_date.getDate() + 1);
                         var btw_fl = true;
                         while (btw_fl) {
@@ -130,9 +133,10 @@ var vm_calendar = {
             this.cal_data = [];
             for (var i = 0; i < this.cal_cel.length; i++) {
                 this.cal_data[i] = [];
-                this.cal_format_event[i] = [];
                 this.cal_row_events[i] = {};
                 for (var e = 0; e < this.cal_cel[i].length; e++) {
+
+                    this.cal_row_events[i][e] = [];
 
                     var this_date = null;
                     var this_dw = null;
@@ -208,11 +212,10 @@ var vm_calendar = {
                                 tre_guid_obj.btw_class = btw_class;
 
                                 tre_guid_obj.event_class = 'zsh-cal-ev-' + e;
-                                if (cal_row_events[i][tre_guid] == undefined) {
-                                    tre_guid_obj.zindex = this_zinex;
-                                    this_zinex = this_zinex + 1;
-                                    cal_row_events[i][tre_guid] = tre_guid_obj;
-                                }
+
+                                tre_guid_obj.zindex = this_zinex;
+                                this_zinex = this_zinex + 1;
+                                cal_row_events[i][e].push(tre_guid_obj);
                             })
                             this.cal_row_events = cal_row_events;
                         }
@@ -225,6 +228,34 @@ var vm_calendar = {
                         dwd: this_dwd,
                         holiday: this_holiday
                     });
+                }
+            }
+
+            //sort event
+            for (var rei = 0; rei < Object.keys(this.cal_row_events).length; rei++) {
+                for (var i = 0; i <  Object.keys(this.cal_row_events[rei]).length; i++) {
+                    if (this.cal_row_events[rei][i].length > 0) {
+                        this.cal_row_events[rei][i].sort(function(a,b) {
+                            if(a.between > b.between) return -1;
+                            if(a.between < b.between) return 1;
+                            if(a.zindex < b.zindex) return -1;
+                            if(a.zindex > b.zindex) return 1;
+                            return 0;
+                        });
+                    }
+                }
+            }
+
+            //set event style zindex
+            for (var rei = 0; rei < Object.keys(this.cal_row_events).length; rei++) {
+                for (var i = 0; i <  Object.keys(this.cal_row_events[rei]).length; i++) {
+                    if (this.cal_row_events[rei][i].length > 0) {
+                        var rei_cnt = 0;
+                        for (var e = 0; e < this.cal_row_events[rei][i].length; e++) {
+                            this.cal_row_events[rei][i][e]['s_zindex'] = rei_cnt;
+                            rei_cnt = rei_cnt + 1;
+                        }
+                    }
                 }
             }
         },
