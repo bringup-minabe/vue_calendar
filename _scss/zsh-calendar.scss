@@ -109,52 +109,6 @@ $cellHeight: 140px;
                 }
             }
         }
-        table {
-            width: 100%;
-            border-top: #CCC 1px solid;
-            border-right: #CCC 1px solid;
-            th, td {
-                border-left: #CCC 1px solid;
-                border-bottom: #CCC 1px solid;
-            }
-            thead {
-                th, td {
-                    padding: 5px 10px;
-                    text-align: center;
-                }
-            }
-            tbody {
-                td {
-                    padding: 10px;
-                    height: $cellHeight;
-                    position: relative;
-                    .calD-day {
-                        font-size: 0.9em;
-                        position: absolute;
-                        top: 8px;
-                        right: 8px;
-                        span {
-                            display: inline-block;
-                            text-align: center;
-                            width: 24px;
-                            height: 24px;
-                            line-height: 24px;
-                            margin: auto;
-                        }
-                    }
-                }
-                .zsh-cal-today {
-                    .calD-day {
-                        span {
-                            -webkit-border-radius: 50%;
-                                    border-radius: 50%;
-                            background-color: #337ab7;
-                            color: #FFF;
-                        }
-                    }
-                }
-            }
-        }
     }
     .calD-day {
         font-size: 0.9em;
@@ -199,6 +153,9 @@ $cellHeight: 140px;
         cursor: pointer;
         a {
             display: block;
+            &:hover, &:visited {
+                text-decoration: none;
+            }
         }
     }
     .zsh-cal-more-con {

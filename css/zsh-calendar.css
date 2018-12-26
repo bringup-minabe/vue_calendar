@@ -157,44 +157,6 @@
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr .zsh-cal-btw-7 {
   width: 100.1%;
 }
-.zsh-cal .zsh-cal-content table {
-  width: 100%;
-  border-top: #CCC 1px solid;
-  border-right: #CCC 1px solid;
-}
-.zsh-cal .zsh-cal-content table th, .zsh-cal .zsh-cal-content table td {
-  border-left: #CCC 1px solid;
-  border-bottom: #CCC 1px solid;
-}
-.zsh-cal .zsh-cal-content table thead th, .zsh-cal .zsh-cal-content table thead td {
-  padding: 5px 10px;
-  text-align: center;
-}
-.zsh-cal .zsh-cal-content table tbody td {
-  padding: 10px;
-  height: 140px;
-  position: relative;
-}
-.zsh-cal .zsh-cal-content table tbody td .calD-day {
-  font-size: 0.9em;
-  position: absolute;
-  top: 8px;
-  right: 8px;
-}
-.zsh-cal .zsh-cal-content table tbody td .calD-day span {
-  display: inline-block;
-  text-align: center;
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
-  margin: auto;
-}
-.zsh-cal .zsh-cal-content table tbody .zsh-cal-today .calD-day span {
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
-  background-color: #337ab7;
-  color: #FFF;
-}
 .zsh-cal .calD-day {
   font-size: 0.9em;
   position: absolute;
@@ -235,6 +197,9 @@
 }
 .zsh-cal .zsh-cal-evCon a {
   display: block;
+}
+.zsh-cal .zsh-cal-evCon a:hover, .zsh-cal .zsh-cal-evCon a:visited {
+  text-decoration: none;
 }
 .zsh-cal .zsh-cal-more-con .zsh-cal-evCon {
   margin-bottom: 5px;
