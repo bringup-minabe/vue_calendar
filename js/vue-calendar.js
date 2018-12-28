@@ -26,7 +26,9 @@ var vm_calendar = {
         cal_guid_ev: {},
         cal_guid_ev_date: {},
         cal_more_title: '',
-        cal_more: []
+        cal_more: [],
+        cal_ev_background_color: '#c6dafc',
+        cal_ev_color: 'rgba(32,33,36,0.38)'
     },
     methods: {
         guid: function() {
@@ -93,6 +95,20 @@ var vm_calendar = {
 
                 //set between flag
                 this.cal_event[i].between = 0;
+
+                //set colors
+                if (typeof this.cal_event[i].background_color == "undefined") {
+                    this.cal_event[i].background_color = this.cal_ev_background_color;
+                }
+                if (typeof this.cal_event[i].color == "undefined") {
+                    this.cal_event[i].color = this.cal_ev_color;
+                }
+                this.cal_event[i].background_color = {
+                    'background-color': this.cal_event[i].background_color,
+                };
+                this.cal_event[i].color = {
+                    'color': this.cal_event[i].color
+                };
 
                 //set event date ar
                 var this_start_date = this.cal_event[i].start_date;

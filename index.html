@@ -53,8 +53,11 @@
                                 ]"
                                 :style="{top: calEvd.s_zindex + 'em'}"
                                 >
-                                    <div class="zsh-cal-evCon">
-                                        <a :href="calEvd.link" target="_blank">{{calEvd.subject}}</a>
+                                    <div
+                                    class="zsh-cal-evCon"
+                                    :style="[calEvd.background_color]"
+                                    >
+                                        <a :href="calEvd.link" :style="[calEvd.color]" target="_blank">{{calEvd.subject}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -68,8 +71,11 @@
                                 ]"
                                 :style="{top: calEvd.s_zindex + 'em'}"
                                 >
-                                    <div class="zsh-cal-evCon">
-                                        <a :href="calEvd.link" target="_blank">{{calEvd.subject}}</a>
+                                    <div
+                                    class="zsh-cal-evCon"
+                                    :style="[calEvd.background_color]"
+                                    >
+                                        <a :href="calEvd.link" :style="[calEvd.color]" target="_blank">{{calEvd.subject}}</a>
                                     </div>
                                 </div>
                                 <div
@@ -109,8 +115,11 @@
                             'zsh-cal-ev'
                             ]"
                             >
-                                <div class="zsh-cal-evCon">
-                                    <a :href="calMdEvd.link" target="_blank">{{calMdEvd.subject}}</a>
+                                <div
+                                class="zsh-cal-evCon"
+                                :style="[calMdEvd.background_color]"
+                                >
+                                    <a :href="calMdEvd.link" :style="[calMdEvd.color]" target="_blank">{{calMdEvd.subject}}</a>
                                 </div>
                             </div>
                         </div>
