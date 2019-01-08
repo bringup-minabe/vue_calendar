@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="css/zsh-calendar.css">
     <script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+    <script>
+        //set google api key
+        var GApiKey = '';
+    </script>
 </head>
 <body>
     <h1 style="text-align: center;">Calendar</h1>
@@ -53,13 +57,15 @@
                                 ]"
                                 :style="{top: calEvd.s_zindex + 'em'}"
                                 >
-                                    <div
-                                    class="zsh-cal-evCon"
-                                    :style="[calEvd.background_color]"
+                                    <a
+                                    class="zsh-cal-evCon CCd"
+                                    :data-guid="calEvd.guid"
+                                    :style="[calEvd.colors]"
                                     @click.right.prevent="calEvRightClick"
+                                    @click.prevent="calEvClick"
                                     >
-                                        <a :href="calEvd.link" :style="[calEvd.color]" target="_blank">{{calEvd.subject}}</a>
-                                    </div>
+                                        {{calEvd.subject}}
+                                    </a>
                                 </div>
                             </div>
                             <div v-else>
@@ -73,11 +79,13 @@
                                 :style="{top: calEvd.s_zindex + 'em'}"
                                 >
                                     <div
-                                    class="zsh-cal-evCon"
-                                    :style="[calEvd.background_color]"
+                                    class="zsh-cal-evCon CCd"
+                                    :data-guid="calEvd.guid"
+                                    :style="[calEvd.colors]"
                                     @click.right.prevent="calEvRightClick"
+                                    @click.prevent="calEvClick"
                                     >
-                                        <a :href="calEvd.link" :style="[calEvd.color]" target="_blank">{{calEvd.subject}}</a>
+                                        {{calEvd.subject}}
                                     </div>
                                 </div>
                                 <div
@@ -87,7 +95,7 @@
                                 ]"
                                 >
                                     <div
-                                    class="zsh-cal-more-tg"
+                                    class="zsh-cal-more-tg CCd"
                                     @click="calMore"
                                     :data-date="calData[calEvIndex].date"
                                     :data-row="calIndex"
@@ -102,43 +110,47 @@
                 </div>
             </div>
         </div>
-        <div class="zsh-cal-more-con">
-            <div class="modal" id="zsh-cal-more" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
-                            <h4 class="modal-title">{{cal_more_title}}</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div
-                            v-for="calMdEvd in cal_more"
-                            :class="[
-                            'zsh-cal-ev'
-                            ]"
-                            >
-                                <div
-                                class="zsh-cal-evCon"
-                                :style="[calMdEvd.background_color]"
-                                >
-                                    <a :href="calMdEvd.link" :style="[calMdEvd.color]" target="_blank">{{calMdEvd.subject}}</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-                        </div>
+        <div v-if="cal_click_box.show" class="cal-click-box cal-click-con CCd" :style="[cal_click_box.style]">
+            <div class="cal-cb-wr CCd">
+                <div class="cal-cb-close CCd" v-on:click="cal_click_box.show = false">×</div>
+                <div class="cal-cb-subject CCd">{{cal_click_box.event.subject}}</div>
+                <div v-if="cal_click_box.event.between == 0">
+                    <div class="cal-cb-date CCd">{{cal_click_box.event.start_date}}</div>
+                </div>
+                <div v-else>
+                    <div class="cal-cb-date CCd">{{cal_click_box.event.start_date}} 〜 {{cal_click_box.event.end_date}}</div>
+                </div>
+                <a :href="cal_click_box.event.link" target="_blank" class="CCd">詳細</a>
+            </div>
+        </div><!-- /cal-click-box -->
+        <div v-if="cal_click_right_box.show" class="cal-click-right-box cal-click-con CCd" :style="[cal_click_right_box.style]">
+            <div class="cal-cb-wr CCd">
+                Click Right Content
+                <div class="cal-cb-close CCd" v-on:click="cal_click_right_box.show = false">×</div>
+                <div class="cal-cb-subject CCd">{{cal_click_right_box.event.subject}}</div>
+            </div>
+        </div><!-- /cal-click-right-box -->
+        <div v-if="cal_more_event.show" class="cal-click-moreEv-box cal-click-con CCd" :style="[cal_more_event.style]">
+            <div class="cal-cb-wr CCd">
+                <div class="cal-cb-close CCd" v-on:click="closeMore">×</div>
+                <div
+                v-for="calMdEvd in cal_more"
+                :class="[
+                'zsh-cal-ev'
+                ]"
+                >
+                    <div
+                    class="zsh-cal-evCon CCd"
+                    :data-guid="calMdEvd.guid"
+                    :style="[calMdEvd.colors]"
+                    @click.right.prevent="calEvRightClick"
+                    @click.prevent="calMoEvClick"
+                    >
+                        {{calMdEvd.subject}}
                     </div>
                 </div>
             </div>
-        </div>
-        <div
-        v-if="cal_click_right_box.show"
-        >
-            <div class="cal-click-right-box" :style="[cal_click_right_box.style]">
-                test
-            </div>
-        </div>
+        </div><!-- /cal-click-right-box -->
     </div><!-- /zsh-cal -->
     <script src="js/vue-calendar.js"></script>
     <script src="js/usr-calendar.js"></script>

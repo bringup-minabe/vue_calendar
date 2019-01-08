@@ -4,6 +4,8 @@
  * firstDay:開始曜日
  *  0:日曜日
  *  1:月曜日
+ *
+ * cal_show_holiday:祝日表示 true | false
  */
 Array.prototype.cal_chunk = function(size) {
     var array = this;
@@ -11,11 +13,36 @@ Array.prototype.cal_chunk = function(size) {
         return i % size ? [] : [array.slice(i, i + size)];
     }));
 }
+
+var vm_cal_listener = {
+    methods:{
+        listen :function(target, eventType, callback) {
+            if (!this._eventRemovers){
+                this._eventRemovers = [];
+            }
+            target.addEventListener(eventType, callback);
+            this._eventRemovers.push({
+                remove :function() {
+                    target.removeEventListener(eventType, callback)
+                }
+            })
+        }
+    },
+    destroyed:function(){
+        if (this._eventRemovers){
+            this._eventRemovers.forEach(function(eventRemover){
+                eventRemover.remove();
+            });
+        }
+    }
+}
+
 var vm_calendar = {
     data: {
         cal_date: null,
         cal_date_display: '',
         cal_firstDay: 1,
+        cal_year: '',
         cal_cel: [],
         cal_data: [],
         w_names: ['日', '月', '火', '水', '木', '金', '土'],
@@ -29,14 +56,37 @@ var vm_calendar = {
         cal_more: [],
         cal_ev_background_color: '#c6dafc',
         cal_ev_color: 'rgba(32,33,36,0.38)',
+        cal_rect: {
+            top: 0,
+            left: 0
+        },
+        cal_click_box: {
+            show: false,
+            event: {},
+            style: {
+                top: '0px',
+                left: '0px'
+            }
+        },
         cal_click_right_box: {
+            show: false,
+            event: {},
+            style: {
+                top: '0px',
+                left: '0px'
+            }
+        },
+        cal_more_event: {
             show: false,
             style: {
                 top: '0px',
                 left: '0px'
             }
-        }
+        },
+        cal_show_holiday: true,
+        cal_holiday: {}
     },
+    mixins:[vm_cal_listener],
     methods: {
         guid: function() {
             var s4 = function() {
@@ -79,6 +129,11 @@ var vm_calendar = {
 
             this.cal_cel = cal_cel;
 
+            //set year
+            if (this.cal_year != pr_date.getFullYear()) {
+                this.cal_year = pr_date.getFullYear();
+            }
+
             //format calendar event
             this.formatCalendarEvent();
 
@@ -110,10 +165,8 @@ var vm_calendar = {
                 if (typeof this.cal_event[i].color == "undefined") {
                     this.cal_event[i].color = this.cal_ev_color;
                 }
-                this.cal_event[i].background_color = {
+                this.cal_event[i].colors = {
                     'background-color': this.cal_event[i].background_color,
-                };
-                this.cal_event[i].color = {
                     'color': this.cal_event[i].color
                 };
 
@@ -153,9 +206,23 @@ var vm_calendar = {
                     }
                 }
             }
+
+            //set holiday
+            if (this.cal_show_holiday == true) {
+                for (var h = 0; h < Object.keys(this.cal_holiday).length; h++) {
+                    var hl_start_date = this.cal_holiday[h].start_date;
+                    if (typeof this.cal_guid_ev_date[hl_start_date]  == "undefined") {
+                        this.cal_guid_ev_date[hl_start_date] = [];
+                    }
+                    this.cal_guid_ev[this.cal_holiday[h].guid] = this.cal_holiday[h];
+                    this.cal_guid_ev_date[hl_start_date].push(this.cal_holiday[h].guid);
+                }
+            }
         },
         setCalendarData: function() {
+
             this.cal_data = [];
+
             for (var i = 0; i < this.cal_cel.length; i++) {
                 this.cal_data[i] = [];
                 this.cal_row_events[i] = {};
@@ -187,12 +254,11 @@ var vm_calendar = {
                             this_dwd = this.w_names[this_dw];
                         }
 
-                        //set holiday
+                        //set last week holiday
                         if (this_dw == 6 || this_dw == 0) {
                             this_holiday = true;
                         }
 
-                        var this_row_event = [];
                         if (typeof this.cal_guid_ev_date[this_date] != 'undefined') {
                             var this_zinex = 0;
                             var tmp_ev = this.cal_guid_ev_date[this_date];
@@ -326,17 +392,135 @@ var vm_calendar = {
             var row = event.srcElement.dataset.row;
             var day = event.srcElement.dataset.day;
             this.cal_more = this.cal_row_events[row][day];
-            $('#zsh-cal-more').modal();
+
+            this.closeClickContent();
+            this.setCalRect(event);
+            this.cal_more_event.style.top = this.cal_rect.top + 'px';
+            this.cal_more_event.style.left = this.cal_rect.left + 'px';
+            this.cal_more_event.show = true;
+        },
+        closeClickContent: function() {
+            if (this.cal_click_box.show == true) {
+                this.cal_click_box.show = false;
+            }
+            if (this.cal_click_right_box.show == true) {
+                this.cal_click_right_box.show = false;
+            }
+            if (this.cal_more_event.show == true) {
+                this.cal_more_event.show = false;
+            }
+        },
+        setCalRect: function(obj) {
+            var cal_el = document.getElementById('calendar');
+            var rect = cal_el.getBoundingClientRect();
+            this.cal_rect.top = (obj.clientY - rect.top);
+            this.cal_rect.left = (obj.clientX - rect.left);
+            //check page size over
+            var sd = this.cal_rect.left + 250; //250 is click content widths
+            if (sd > rect.width) {
+                this.cal_rect.left = this.cal_rect.left - (sd - rect.width);
+            }
+        },
+        calEvClick: function(event) {
+            this.closeClickContent();
+            this.setCalRect(event);
+            var guid = event.srcElement.dataset.guid;
+            this.cal_click_box.event = this.cal_guid_ev[guid];
+            this.cal_click_box.style.top = this.cal_rect.top + 'px';
+            this.cal_click_box.style.left = this.cal_rect.left + 'px';
+            this.cal_click_box.show = true;
+        },
+        calMoEvClick: function(event) {
+            this.setCalRect(event);
+            var guid = event.srcElement.dataset.guid;
+            this.cal_click_box.event = this.cal_guid_ev[guid];
+            this.cal_click_box.style.top = this.cal_rect.top + 'px';
+            this.cal_click_box.style.left = this.cal_rect.left + 'px';
+            this.cal_click_box.show = true;
         },
         calEvRightClick: function(event) {
-            this.cal_click_right_box.style.top = event.layerY + 'px';
-            this.cal_click_right_box.style.left = event.layerX + 'px';
+            this.closeClickContent();
+            this.setCalRect(event);
+            var guid = event.srcElement.dataset.guid;
+            this.cal_click_right_box.event = this.cal_guid_ev[guid];
+            this.cal_click_right_box.style.top = this.cal_rect.top + 'px';
+            this.cal_click_right_box.style.left = this.cal_rect.left + 'px';
             this.cal_click_right_box.show = true;
-            console.log(event);
+        },
+        closeMore: function() {
+            this.cal_more_event.show = false;
+            this.cal_click_box.show = false;
+        },
+        getJpHoliday: function() {
+
+            this.cal_holiday = {};
+            var holidays_id = 'japanese__ja@holiday.calendar.google.com';
+            var vm = this;
+
+            if (GApiKey == '') {
+                return;
+            }
+
+            axios.get("https://www.googleapis.com/calendar/v3/calendars/" + holidays_id + "/events", {
+                params: {
+                    key: GApiKey,
+                    // timeMin: new Date(this.cal_year + '-01-01'),
+                    // timeMax: new Date(this.cal_year + '-12-31'),
+                }
+            })
+            .then(function (response) {
+                //set data
+                for (var i = 0; i < response.data.items.length; i++) {
+                    vm.cal_holiday[i] = {};
+                    var holiday_data = {
+                        guid: vm.guid(),
+                        between: 0,
+                        start_date: response.data.items[i].start.date,
+                        end_date: response.data.items[i].start.date,
+                        subject: response.data.items[i].summary,
+                        colors: {
+                            'background-color': "#d8e8c6",
+                            'color': "rgba(32,33,36,0.38)"
+                        }
+                    };
+                    vm.$set(vm.cal_holiday, i, holiday_data);
+                }
+                vm.$emit('GET_HOLIDAY_COMPLETE');
+            })
+            .catch(function (error) {
+                vm.cal_holiday = {};
+                vm.$emit('GET_HOLIDAY_COMPLETE');
+            })
         }
     },
     created: function() {
         var now = new Date;
-        this.cal_today = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate();
+        var now_date_m = ('0' + (now.getMonth() + 1)).slice(-2);
+        var now_date_d = ('0' + now.getDate()).slice(-2);
+        this.cal_today = now.getFullYear() + '-' + now_date_m + '-' + now_date_d;
+
+        this.cal_year = now.getFullYear();
+
+        //click content close
+        this.listen(window, 'click', function(e){
+            if (!e.target.classList.contains('CCd')) {
+                this.closeClickContent();
+            }
+        }.bind(this));
+    },
+    mounted: function() {
+
+        //get holiday
+        if (this.cal_show_holiday == true) {
+            this.getJpHoliday();
+        }
+
+        if (this.cal_show_holiday == true && GApiKey != '') {
+            this.$on('GET_HOLIDAY_COMPLETE', function() {
+                this.setCalendar();
+            });
+        } else {
+            this.setCalendar();
+        }
     }
 }

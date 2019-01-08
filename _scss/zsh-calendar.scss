@@ -19,20 +19,21 @@ $cellHeight: 140px;
         .zsh-cal-conHead {
             display: flex;
             border-top: #CCC 1px solid;
-            border-right: #CCC 1px solid;
             div {
                 padding: 5px 0;
                 width: 14.3%;
                 text-align: center;
                 border-left: #CCC 1px solid;
                 border-bottom: #CCC 1px solid;
+                &:last-child {
+                    border-right: 1px solid #CCC;
+                }
             }
         }
         .zsh-cal-conBody {
             .zsh-cal-conRw {
                 width: 100%;
                 height: $cellHeight;
-                border-right: #CCC 1px solid;
                 position: relative;
                 .zsh-cal-conCeWr {
                     position: absolute;
@@ -47,6 +48,9 @@ $cellHeight: 140px;
                     border-left: #CCC 1px solid;
                     border-bottom: #CCC 1px solid;
                     position: relative;
+                    &:last-child {
+                        border-right: 1px solid #CCC;
+                    }
                 }
                 .zsh-cal-evWr {
                     width: 100%;
@@ -139,6 +143,7 @@ $cellHeight: 140px;
         background-color: #EEE;
     }
     .zsh-cal-evCon {
+        display: block;
         height: 22px;
         padding: 0 8px;
         line-height: 20px;
@@ -153,12 +158,9 @@ $cellHeight: 140px;
         background-color: #c6dafc;
         cursor: pointer;
         user-select: none;
-        a {
-            display: block;
+        text-decoration: none;        
+        &:hover, &:visited {
             text-decoration: none;
-            &:hover, &:visited {
-                text-decoration: none;
-            }
         }
     }
     .zsh-cal-more-con {
@@ -166,11 +168,12 @@ $cellHeight: 140px;
             margin-bottom: 5px;
         }
     }
-    .cal-click-right-box {
+    .cal-click-con {
+        width: 250px;
         position: absolute;
+        font-size: 1.1em;
         background-color: #FFF;
         border: 1px solid #EEE;
-        padding: 10px;
         z-index: 10;
         -webkit-box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.15);
             -moz-box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.15);
@@ -178,9 +181,38 @@ $cellHeight: 140px;
             -webkit-border-radius: 10px;
         -webkit-border-radius: 6px;
                 border-radius: 6px;
+        .cal-cb-wr {
+            position: relative;
+            padding: 15px;
+        }
+        .cal-cb-close {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+        }
+        .cal-cb-subject {
+            padding: 5px 0;
+        }
+        .cal-cb-date {
+            padding: 5px 0;
+        }
+    }
+    .cal-click-box {
+        z-index: 11;
+    }
+    .cal-click-moreEv-box {
+        .cal-cb-wr {
+            padding: 25px;
+        }
+        .zsh-cal-ev {
+            margin-bottom: 5px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
     }
 }
-
 @media screen and (min-width:768px) {
     .zsh-cal {
         .zsh-cal-content {

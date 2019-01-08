@@ -13,7 +13,6 @@
 .zsh-cal .zsh-cal-content .zsh-cal-conHead {
   display: flex;
   border-top: #CCC 1px solid;
-  border-right: #CCC 1px solid;
 }
 .zsh-cal .zsh-cal-content .zsh-cal-conHead div {
   padding: 5px 0;
@@ -22,10 +21,12 @@
   border-left: #CCC 1px solid;
   border-bottom: #CCC 1px solid;
 }
+.zsh-cal .zsh-cal-content .zsh-cal-conHead div:last-child {
+  border-right: 1px solid #CCC;
+}
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw {
   width: 100%;
   height: 140px;
-  border-right: #CCC 1px solid;
   position: relative;
 }
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-conCeWr {
@@ -41,6 +42,9 @@
   border-left: #CCC 1px solid;
   border-bottom: #CCC 1px solid;
   position: relative;
+}
+.zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-conCe:last-child {
+  border-right: 1px solid #CCC;
 }
 .zsh-cal .zsh-cal-content .zsh-cal-conBody .zsh-cal-conRw .zsh-cal-evWr {
   width: 100%;
@@ -182,6 +186,7 @@
   background-color: #EEE;
 }
 .zsh-cal .zsh-cal-evCon {
+  display: block;
   height: 22px;
   padding: 0 8px;
   line-height: 20px;
@@ -196,22 +201,20 @@
   background-color: #c6dafc;
   cursor: pointer;
   user-select: none;
-}
-.zsh-cal .zsh-cal-evCon a {
-  display: block;
   text-decoration: none;
 }
-.zsh-cal .zsh-cal-evCon a:hover, .zsh-cal .zsh-cal-evCon a:visited {
+.zsh-cal .zsh-cal-evCon:hover, .zsh-cal .zsh-cal-evCon:visited {
   text-decoration: none;
 }
 .zsh-cal .zsh-cal-more-con .zsh-cal-evCon {
   margin-bottom: 5px;
 }
-.zsh-cal .cal-click-right-box {
+.zsh-cal .cal-click-con {
+  width: 250px;
   position: absolute;
+  font-size: 1.1em;
   background-color: #FFF;
   border: 1px solid #EEE;
-  padding: 10px;
   z-index: 10;
   -webkit-box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.15);
@@ -219,6 +222,34 @@
   -webkit-border-radius: 10px;
   -webkit-border-radius: 6px;
   border-radius: 6px;
+}
+.zsh-cal .cal-click-con .cal-cb-wr {
+  position: relative;
+  padding: 15px;
+}
+.zsh-cal .cal-click-con .cal-cb-close {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  cursor: pointer;
+}
+.zsh-cal .cal-click-con .cal-cb-subject {
+  padding: 5px 0;
+}
+.zsh-cal .cal-click-con .cal-cb-date {
+  padding: 5px 0;
+}
+.zsh-cal .cal-click-box {
+  z-index: 11;
+}
+.zsh-cal .cal-click-moreEv-box .cal-cb-wr {
+  padding: 25px;
+}
+.zsh-cal .cal-click-moreEv-box .zsh-cal-ev {
+  margin-bottom: 5px;
+}
+.zsh-cal .cal-click-moreEv-box .zsh-cal-ev:last-child {
+  margin-bottom: 0;
 }
 
 @media screen and (min-width: 768px) {

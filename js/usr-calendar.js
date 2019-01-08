@@ -2,6 +2,7 @@ var usr_calendar = new Vue({
     el: '#calendar',
     mixins: [vm_calendar],
     created: function() {
+        this.cal_show_holiday = true;
         this.cal_event = [
             {
                 subject: 'テスト1',
@@ -111,8 +112,7 @@ var usr_calendar = new Vue({
                 start_date: '2018-12-18',
                 end_date: '2018-12-21',
                 link: 'http://localhost:8080/#10'
-            },
+            }
         ];
-        this.setCalendar();
     }
 })
