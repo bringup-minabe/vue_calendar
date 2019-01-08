@@ -56,6 +56,7 @@
                                     <div
                                     class="zsh-cal-evCon"
                                     :style="[calEvd.background_color]"
+                                    @click.right.prevent="calEvRightClick"
                                     >
                                         <a :href="calEvd.link" :style="[calEvd.color]" target="_blank">{{calEvd.subject}}</a>
                                     </div>
@@ -74,6 +75,7 @@
                                     <div
                                     class="zsh-cal-evCon"
                                     :style="[calEvd.background_color]"
+                                    @click.right.prevent="calEvRightClick"
                                     >
                                         <a :href="calEvd.link" :style="[calEvd.color]" target="_blank">{{calEvd.subject}}</a>
                                     </div>
@@ -128,6 +130,13 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div
+        v-if="cal_click_right_box.show"
+        >
+            <div class="cal-click-right-box" :style="[cal_click_right_box.style]">
+                test
             </div>
         </div>
     </div><!-- /zsh-cal -->

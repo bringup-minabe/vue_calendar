@@ -28,7 +28,14 @@ var vm_calendar = {
         cal_more_title: '',
         cal_more: [],
         cal_ev_background_color: '#c6dafc',
-        cal_ev_color: 'rgba(32,33,36,0.38)'
+        cal_ev_color: 'rgba(32,33,36,0.38)',
+        cal_click_right_box: {
+            show: false,
+            style: {
+                top: '0px',
+                left: '0px'
+            }
+        }
     },
     methods: {
         guid: function() {
@@ -320,6 +327,12 @@ var vm_calendar = {
             var day = event.srcElement.dataset.day;
             this.cal_more = this.cal_row_events[row][day];
             $('#zsh-cal-more').modal();
+        },
+        calEvRightClick: function(event) {
+            this.cal_click_right_box.style.top = event.layerY + 'px';
+            this.cal_click_right_box.style.left = event.layerX + 'px';
+            this.cal_click_right_box.show = true;
+            console.log(event);
         }
     },
     created: function() {

@@ -1,6 +1,7 @@
 .zsh-cal {
   padding: 10px;
   font-size: 12px;
+  position: relative;
 }
 .zsh-cal .zsh-cal-date {
   text-align: center;
@@ -194,15 +195,30 @@
   outline: none;
   background-color: #c6dafc;
   cursor: pointer;
+  user-select: none;
 }
 .zsh-cal .zsh-cal-evCon a {
   display: block;
+  text-decoration: none;
 }
 .zsh-cal .zsh-cal-evCon a:hover, .zsh-cal .zsh-cal-evCon a:visited {
   text-decoration: none;
 }
 .zsh-cal .zsh-cal-more-con .zsh-cal-evCon {
   margin-bottom: 5px;
+}
+.zsh-cal .cal-click-right-box {
+  position: absolute;
+  background-color: #FFF;
+  border: 1px solid #EEE;
+  padding: 10px;
+  z-index: 10;
+  -webkit-box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 10px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
 }
 
 @media screen and (min-width: 768px) {
