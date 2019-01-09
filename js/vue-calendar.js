@@ -191,8 +191,10 @@ var vm_calendar = {
                         tob_start_date.setDate(tob_start_date.getDate() + 1);
                         var btw_fl = true;
                         while (btw_fl) {
-                            var btw_date = tob_start_date.getFullYear() + '-' + (tob_start_date.getMonth() + 1) + '-' + tob_start_date.getDate();
-                            if (typeof this.cal_guid_ev_date[btw_date]  == "undefined") {
+                            var btw_date_m = ('0' + (tob_start_date.getMonth() + 1)).slice(-2);
+                            var btw_date_d = ('0' + tob_start_date.getDate()).slice(-2);
+                            var btw_date = tob_start_date.getFullYear() + '-' + btw_date_m + '-' + btw_date_d;
+                            if (typeof this.cal_guid_ev_date[btw_date] == "undefined") {
                                 this.cal_guid_ev_date[btw_date] = [];
                             }
                             if (this.cal_guid_ev_date[btw_date].indexOf(this.cal_event[i].guid) == -1) {
@@ -303,9 +305,9 @@ var vm_calendar = {
                                 tre_guid_obj.btw_class = btw_class;
 
                                 tre_guid_obj.event_class = 'zsh-cal-ev-' + e;
-
                                 tre_guid_obj.zindex = this_zinex;
                                 this_zinex = this_zinex + 1;
+
                                 cal_row_events[i][e].push(tre_guid_obj);
                             })
                             this.cal_row_events = cal_row_events;
@@ -339,11 +341,20 @@ var vm_calendar = {
 
             //set event style zindex
             for (var rei = 0; rei < Object.keys(this.cal_row_events).length; rei++) {
+                var row_events = {};
                 for (var i = 0; i <  Object.keys(this.cal_row_events[rei]).length; i++) {
                     if (this.cal_row_events[rei][i].length > 0) {
                         var rei_cnt = 0;
                         for (var e = 0; e < this.cal_row_events[rei][i].length; e++) {
-                            this.cal_row_events[rei][i][e]['s_zindex'] = rei_cnt;
+                            var ov_e = 0;
+                            if (row_events[this.cal_row_events[rei][i][e].guid] == undefined) {
+                                row_events[this.cal_row_events[rei][i][e].guid] = rei_cnt;
+                                this.cal_row_events[rei][i][e]['s_zindex'] = rei_cnt;
+                            } else {
+                                this.cal_row_events[rei][i][e]['s_zindex'] = row_events[this.cal_row_events[rei][i][e].guid];
+                                ov_e = row_events[this.cal_row_events[rei][i][e].guid];
+                                rei_cnt = ov_e;
+                            }
                             rei_cnt = rei_cnt + 1;
                         }
                     }
@@ -515,12 +526,14 @@ var vm_calendar = {
             this.getJpHoliday();
         }
 
-        if (this.cal_show_holiday == true && GApiKey != '') {
-            this.$on('GET_HOLIDAY_COMPLETE', function() {
+        this.$on('GET_CALEMDAR_EVENT_COMPLETE', function() {
+            if (this.cal_show_holiday == true && GApiKey != '') {
+                this.$on('GET_HOLIDAY_COMPLETE', function() {
+                    this.setCalendar();
+                });
+            } else {
                 this.setCalendar();
-            });
-        } else {
-            this.setCalendar();
-        }
+            }
+        });
     }
 }
